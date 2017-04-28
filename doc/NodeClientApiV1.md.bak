@@ -1,0 +1,487 @@
+# Client API (version 1) <br/> Storage Microservices Client SDK for Node.js
+
+Node.js client API for Storage microservice is a thin layer on the top of
+communication protocols. It hides details related to specific protocol implementation
+and provides high-level API to access the microservice for simple and productive development.
+
+* [Installation](#install)
+* [Getting started](#get_started)
+* [Block class](#class1)
+* [BlockPage class](#class2)
+* [IBlockClient interface](#interface)
+    - [init()](#operation1)
+    - [open()](#operation2)
+    - [close()](#operation3)
+    - [getBlocks()](#operation4)
+    - [getBlockById()](#operation5)
+    - [createBlockFromStream()](#operation5)
+    - [createBlockFromBinary()](#operation5)
+    - [createBlockFromUrl()](#operation5)
+    - [updateBlock()](#operation5)
+    - [deleteBlock()](#operation5)
+    - [deleteBlocks()](#operation5)
+    - [getBlockAsStream()](#operation5)
+    - [getBlockAsBinary()](#operation5)
+    - [isBlockUrlSupported()](#operation5)
+    - [getBlockAsUrl()](#operation5)
+    - [addBlockRefs()](#operation5)
+    - [updateBlockRefs()](#operation5)
+    - [removeBlockRefs()](#operation5)
+* [BlockRestClient class](#client_rest)
+* [BlockSenecaClient class](#client_seneca)
+* [BlockNullClient class](#client_null)
+    
+## <a name="install"></a> Installation
+
+To work with the client SDK add dependency into package.json file:
+
+```javascript
+{
+    ...
+    "dependencies": {
+        ....
+        "pip-clients-storage-node": "git+ssh://git@github.com:pip-services/pip-clients-storage-node.git",
+        ...
+    }
+}
+```
+
+Then download the dependency using **npm**:
+
+```javascript
+# Installing dependencies
+npm install
+
+# Updating dependencies
+npm update
+```
+
+If you are using Typescript, add the following type definition where compiler can find it
+```javascript
+/// <reference path="../node_modules/pip-clients-storage-node/module.d.ts" />
+```
+
+## <a name="get_started"></a> Getting started
+
+This is a simple example on how to work with the microservice using REST client:
+
+```javascript
+// Get Client SDK for Version 1 
+var sdk = new require('pip-clients-storage-node').Version1;
+
+// Client configuration
+var config = {
+    transport: {
+        type: 'http',
+        host: 'localhost', 
+        port: 8010
+    }
+};
+
+// Create the client instance
+var client = sdk.StorageRestClient(config);
+
+// Open client connection to the microservice
+client.open(function(err) {
+    if (err) {
+        console.error(err);
+        return; 
+    }
+    
+    console.log('Opened connection');
+        
+    // Create a new picture
+    var block = {
+        type: "pictures",
+        name: "google_search.jpg"
+    };
+
+    client.createBlockFromUrl(
+        block,
+        "https://www.google.com/logos/doodles/2016/doodle-4-google-2016-us-winner-5664555055185920-hp.jpg",
+        function (err, block) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            
+            console.log('Created block is');
+            console.log(block);
+                
+            // Get the picture
+            client.getBlockAsBinary(
+                block_id,
+                function(err, buffer) {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+                    
+                    console.log('Block content' + (buffer ? 'is not empty' : 'empty'));
+                    
+                    // Close connection
+                    client.close(); 
+                }
+            );
+        }
+    );
+});
+```
+
+### <a name="class1"></a> Block class
+
+Represents a record about stored binary block in the storage.
+
+**Properties:**
+- id: string - unique block id
+- category: string - block category (default: 'general') 
+- name: string - file name
+- length: int - block length
+- content_type: string - MIME type of block content
+- created: Date - (readonly) date and time when block was created
+- creator_id: string - (optional) unique id of user or party who created the block
+- party_id: string - (optional) unique id of the party who owns the block
+- refs: Reference[] - array of references from other entities to the block
+  - id: string - unique reference id
+  - type: string - reference type
+  - name: string - (optional) descriptive reference name 
+- custom_hdr: Object - custom data summary that is always returned (in list and details)
+- custom_dat: Object - custom data details that is returned only when a single object is returned (details)
+
+### <a name="class2"></a> SystemActivityPage class
+
+Represents a paged result with subset of requested Block objects
+
+**Properties:**
+- data: Block[] - array of retrieved SystemActivity page
+- count: int - total number of objects in retrieved resultset
+
+## <a name="interface"></a> IStorageClient interface
+
+If you are using Typescript, you can use IStorageClient as a common interface across all client implementations. 
+If you are using plain Javascript, you shall not worry about IStorageClient interface. You can just expect that
+all methods defined in this interface are implemented by all client classes.
+
+```javascript
+interface IStorageClient {
+    init(refs, callback);
+    open(callback);
+    close(callback);
+    getBlocks(filter, paging, callback);
+    getBlockById(blockId, callback);    
+    createBlockFromStream(blockId, readStream, callback);
+    createBlockFromBinary(blockId, data, callback);
+    createBlockFromUrl(blockId, url, callback);   
+    updateBlock(blockId, block, callback);
+    deleteBlock(blockId, callback);
+    deleteBlocks(blockIds, callback);    
+    getBlockAsStream(blockId, writeStream, callback);
+    getBlockAsBinary(blockId, callback);
+    isBlockUrlSupported(callback);
+    getBlockAsUrl(blockId, callback);    
+    addBlockRefs(blockIds, ref, callback);
+    updateBlockRefs(oldBlockIds, newBlockIds, refs, callback);
+    removeBlockRefs(blockIds, ref, callback);
+}
+```
+
+### <a name="operation1"></a> init(refs)
+
+Initializes client references. This method is optional. It is used to set references 
+to logger or performance counters.
+
+**Arguments:**
+- refs: References - references to other components 
+  - log: ILog - reference to logger
+  - counters: ICounters - reference to performance counters
+- callback: (err) => void - callback function
+  - err - Error or null is no error occured
+
+### <a name="operation2"></a> open(callback)
+
+Opens connection to the microservice
+
+**Arguments:**
+- callback: (err) => void - callback function
+  - err - Error or null is no error occured
+
+### <a name="operation3"></a> close(callback)
+
+Closes connection to the microservice
+
+**Arguments:**
+- callback: (err) => void - callback function
+  - err - Error or null is no error occured
+
+### <a name="operation4"></a> getBlocks(filter, paging, callback)
+
+Retrieves a list of stored binary blocks by specified criteria
+
+**Arguments:** 
+- filter: object - filter parameters
+  - category: string - (optional) block category
+  - block_ids: [string] - (optional) unique block ids
+  - party_id: string (optional) unique party id who owns blocks
+  - refs_empty: boolean (optional) **true** for blocks with no references
+  - ref_id: string - (optional) unique reference id
+- paging: object - paging parameters
+  - paging: bool - (optional) true to enable paging and return total count
+  - skip: int - (optional) start of page (default: 0). Operation returns paged result
+  - take: int - (optional) page length (max: 100). Operation returns paged result
+- callback: (err, page) => void - callback function
+  - err: Error - occured error or null for success
+  - page: BlockPage - retrieved Block objects in paged format
+
+### <a name="operation5"></a> getBlockById(blockId, callback)
+
+Retrieves information about stored block by its unique id.
+
+**Arguments:** 
+- block_id: string - unique block id
+- callback: (err, block) => void - callback function
+  - err: Error - occured error or null for success
+  - block: Block - retrieved Block object
+
+### <a name="operation6"></a> createBlockFromStream(block, readStream, callback)
+
+Creates binary block and uploads its content from provided stream.
+
+**Arguments:** 
+- block: Block - information about the Binary block
+- readStream: Stream - Stream with block content
+- callback: (err, block) => void - callback function
+  - err: Error - occured error or null for success
+  - block: Block - created Block object
+
+### <a name="operation7"></a> createBlockFromBinary(block, data, callback)
+
+Creates binary block and uploads its content from provided binary buffer.
+
+**Arguments:** 
+- block: Block - information about the Binary block
+- data: String, Array or Buffer - serialized binary data
+- callback: (err, block) => void - callback function
+  - err: Error - occured error or null for success
+  - block: Block - created Block object
+
+### <a name="operation8"></a> createBlockFromUrl(block, url, callback)
+
+Creates binary block and uploads its content from provided url.
+Currently only **http** and **https** protocols are supported.
+
+**Arguments:** 
+- block: Block - information about the Binary block
+- url: string - URL of the file location
+- callback: (err, block) => callback function
+  - err: Error - occured error or null for success
+  - block: Block - created Block object
+
+### <a name="operation9"></a> updateBlock(blockId, block, callback)
+
+Changes block name, owner or category.
+
+**Arguments:**
+- blockId: string - unique block id 
+- block: Block - updated information about the Binary block (partial updates are supported)
+- callback: (err, block) => void - callback function
+  - err: Error - occured error or null for success
+  - block: Block - updated Block object
+
+### <a name="operation10"></a> deleteBlock(blockId, callback)
+
+Deletes block specified by its unique id.
+
+**Arguments:** 
+- blockId: string - unique block id
+- callback: (err) => void - callback function
+  - err: Error - occured error or null for success
+
+### <a name="operation11"></a> deleteBlocks(blockIds, callback)
+
+Deletes multiple block specified by their unique ids.
+
+**Arguments:** 
+- blockIds: [string] - unique block ids
+- callback: (err) => void - callback function
+  - err: Error - occured error or null for success
+
+### <a name="operation12"></a> getBlockAsStream(blockId, writeStream, callback)
+
+Retrieves block content as stream.
+
+**Arguments:** 
+- blockId: string - unique block id
+- writeStream: Stream - (optional) stream when block content shall be written. If stream parameter is not provided, it creates a new Stream object. 
+- callback: (err, stream) => void - callback function
+  - err: Error - occured error or null for success
+  - stream: Stream - Stream object with the block content
+
+### <a name="operation13"></a> getBlockAsBinary(blockId, callback)
+
+Retrieves block content as binary buffer.
+
+**Arguments:** 
+- blockId: string - unique block id
+- callback: (err, data) => void - callback function
+  - err: Error - occured error or null for success
+  - data: Buffer - Buffer object with the block content
+
+### <a name="operation14"></a> isBlockUrlSupported(callback)
+
+Checks if microservice implementation supports retrieval of block content as url for direct access.
+Direct content url is only supported for AWS S3 data access.
+
+**Arguments:** 
+- callback: (err, supported) => void - callback function
+  - err: Error - occured error or null for success
+  - supported: boolean - **true** if microservice implementation supported **getBlockAsUrl** calls.
+
+### <a name="operation15"></a> getBlockAsUrl(blockId, callback)
+
+Retrieves url for direct access to the block content.
+Direct content url is only supported for AWS S3 data access.
+Other implementations will return an error.
+Use **isBlockUrlSupported** to check if this operation is supported before making a call. 
+
+**Arguments:** 
+- blockId: string - unique block id
+- callback: (err, url) => void - callback function
+  - err: Error - occured error or null for success
+  - url: string - URL for direct access to the block content
+
+### <a name="operation16"></a> addBlockRefs(blockIds, ref, callback)
+
+Adds references from entity to specified binary blocks.
+
+**Arguments:** 
+- blockIds: string[] - unique ids of blocks where references shall be added
+- ref: object - reference to add
+  - id: string - unique reference id
+  - type: string - reference type
+  - name: string - (optional) readable reference name
+- callback: (err) => void - callback function
+  - err: Error - occured error or null for success
+
+### <a name="operation17"></a> updateBlockRefs(oldBlockIds, newBlockIds, ref, callback)
+
+Updates references from entity to specified binary blocks.
+It calculates which blocks were added or removed and performs correspondent operations to make the changes.
+
+**Arguments:** 
+- oldBlockIds: string[] - unique ids of blocks that previously were referenced to entity
+- newBlockIds: string[] - unique ids of block that currently are referenced to entity
+- ref: object - reference to change
+  - id: string - unique reference id
+  - type: string - reference type
+  - name: string - (optional) readable reference name
+- callback: (err) => void - callback function
+  - err: Error - occured error or null for success
+
+### <a name="operation18"></a> removeBlockRefs(blockIds, ref, callback)
+
+Removes references from entity to specified binary blocks.
+
+**Arguments:** 
+- blockIds: string[] - unique ids of blocks where references shall be removed
+- ref: object - reference to remove
+  - id: string - unique reference id
+  - type: string - reference type
+- callback: (err) => void - callback function
+  - err: Error - occured error or null for success
+ 
+## <a name="client_rest"></a> StorageRestClient class
+
+StorageRestClient is a client that implements HTTP/REST protocol
+
+```javascript
+class StorageRestClient extends RestClient implements IStorageClient {
+    constructor(config?);
+    init(refs, callback);
+    open(callback);
+    close(callback);
+    getBlocks(filter, paging, callback);
+    getBlockById(blockId, callback);    
+    createBlockFromStream(blockId, readStream, callback);
+    createBlockFromBinary(blockId, data, callback);
+    createBlockFromUrl(blockId, url, callback);   
+    updateBlock(blockId, block, callback);
+    deleteBlock(blockId, callback);
+    deleteBlocks(blockIds, callback);    
+    getBlockAsStream(blockId, writeStream, callback);
+    getBlockAsBinary(blockId, callback);
+    isBlockUrlSupported(callback);
+    getBlockAsUrl(blockId, callback);    
+    addBlockRefs(blockIds, ref, callback);
+    updateBlockRefs(oldBlockIds, newBlockIds, refs, callback);
+    removeBlockRefs(blockIds, ref, callback);
+}
+```
+
+**Constructor config properties:** 
+- transport: object - HTTP transport configuration options
+  - type: string - HTTP protocol - 'http' or 'https' (default is 'http')
+  - host: string - IP address/hostname binding (default is '0.0.0.0')
+  - port: number - HTTP port number
+
+## <a name="client_seneca"></a> StorageSenecaClient class
+
+StorageSenecaClient is a client that implements Seneca protocol
+
+```javascript
+class StorageSenecaClient extends SenecaClient implements IStorageClient {
+    constructor(config?);        
+    init(refs, callback);
+    open(callback);
+    close(callback);
+    getBlocks(filter, paging, callback);
+    getBlockById(blockId, callback);    
+    createBlockFromStream(blockId, readStream, callback);
+    createBlockFromBinary(blockId, data, callback);
+    createBlockFromUrl(blockId, url, callback);   
+    updateBlock(blockId, block, callback);
+    deleteBlock(blockId, callback);
+    deleteBlocks(blockIds, callback);    
+    getBlockAsStream(blockId, writeStream, callback);
+    getBlockAsBinary(blockId, callback);
+    isBlockUrlSupported(callback);
+    getBlockAsUrl(blockId, callback);    
+    addBlockRefs(blockIds, ref, callback);
+    updateBlockRefs(oldBlockIds, newBlockIds, refs, callback);
+    removeBlockRefs(blockIds, ref, callback);
+}
+```
+
+**Constructor config properties:** 
+- transport: object - (optional) Seneca transport configuration options. See http://senecajs.org/api/ for details.
+  - type: string - Seneca transport type 
+  - host: string - IP address/hostname binding (default is '0.0.0.0')
+  - port: number - Seneca port number
+
+## <a name="client_null"></a> StorageNullClient class
+
+StorageNullClient is a dummy client that mimics the real client but doesn't call a microservice. 
+It can be useful in testing scenarios to cut dependencies on external microservices.
+
+```javascript
+class StorageNullClient extends AbstractClient implements IStorageClient {
+    constructor();        
+    init(refs, callback);
+    open(callback);
+    close(callback);
+    getBlocks(filter, paging, callback);
+    getBlockById(blockId, callback);    
+    createBlockFromStream(blockId, readStream, callback);
+    createBlockFromBinary(blockId, data, callback);
+    createBlockFromUrl(blockId, url, callback);   
+    updateBlock(blockId, block, callback);
+    deleteBlock(blockId, callback);
+    deleteBlocks(blockIds, callback);    
+    getBlockAsStream(blockId, writeStream, callback);
+    getBlockAsBinary(blockId, callback);
+    isBlockUrlSupported(callback);
+    getBlockAsUrl(blockId, callback);    
+    addBlockRefs(blockIds, ref, callback);
+    updateBlockRefs(oldBlockIds, newBlockIds, refs, callback);
+    removeBlockRefs(blockIds, ref, callback);
+}
+```

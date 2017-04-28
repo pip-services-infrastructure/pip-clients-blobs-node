@@ -1,0 +1,61 @@
+{
+    "name": "pip-clients-blobs-node",
+    "version": "1.0.0",
+    "author": "Conceptual Vision Consulting LLC",
+    "description": "Node.js client sdk for pip-services-blobs microservice",
+    "contributors": [
+        {
+            "name": "Sergey Seroukhov",
+            "email": "seroukhov@gmail.com"
+        }
+    ],
+    "main": "./obj/src/index.js",
+    "typings": "./obj/src/index.d.ts",
+    "keywords": [
+        "pip.services", 
+        "blobs",
+        "storage",
+        "microservice",
+        "client",
+        "sdk"
+    ],
+    "noAnalyze": true,
+    "repository" : {
+        "type": "git",
+        "url": "ssh://git@github.com:pip-services-infrastructure/pip-clients-blobs-node.git"
+    },
+    "license": "MIT",
+    "engines": {
+        "node": ">=0.6.14"
+    },
+    "private": true,
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc --watch",
+        "test": "mocha -t 10000 -R spec -u tdd --recursive ./obj/test",
+        "retest": "tsc && mocha -t 10000 -R spec -u tdd --recursive ./obj/test",
+        "benchmark": "matcha -R clean -I tdd ./obj/benchmark/run.js",
+        "rebenchmark": "tsc && matcha -R clean -I tdd ./obj/benchmark/run.js"
+    },
+    "dependencies": {
+        "pip-services-commons-node": "^2.0.0",
+        "pip-services-net-node": "^2.0.0",
+        "pip-services-aws-node": "^1.0.0",
+        "aws-sdk": "^2.45.0"
+    },
+    "devDependencies": {
+        "@types/node": "*",
+        "@types/lodash": "^4.0.0",
+        "@types/async": "^2.0.0",
+        "@types/chai": "*",
+        "@types/mocha": "*",
+        "@types/mongodb": "^2.1.38",
+        "@types/mongoose": "^4.7.4",
+        "seneca": "^3.3.0",
+        "restify": "^4.3.0",
+        "chai": "*",
+        "matcha": "*",
+        "mocha": "*",
+        "pip-services-blobs-node": "git+ssh://git@github.com:pip-services-infrastructure/pip-services-blobs-node.git"
+    }
+}
