@@ -33,7 +33,7 @@ export interface IBlobsClientV1 {
         callback: (err: any) => void): void;
 
     deleteBlobById(correlationId: string, blobId: string,
-        callback?: (err: any, item: BlobInfoV1) => void): void;
+        callback?: (err: any) => void): void;
 
     deleteBlobsByIds(correlationId: string, blobIds: string[],
         callback?: (err: any) => void): void;
