@@ -18,7 +18,7 @@ export class BlobsHttpClientV1 extends CommandableHttpClient
     private _chunkSize: number = 10240;
 
     constructor(config?: any) {
-        super('blobs');
+        super('v1/blobs');
 
         if (config != null)
             this.configure(ConfigParams.fromValue(config));

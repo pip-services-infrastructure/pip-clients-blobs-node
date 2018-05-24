@@ -7,7 +7,7 @@ const BlobsUriProcessorV1_1 = require("./BlobsUriProcessorV1");
 const BlobsStreamProcessorV1_1 = require("./BlobsStreamProcessorV1");
 class BlobsHttpClientV1 extends pip_services_net_node_1.CommandableHttpClient {
     constructor(config) {
-        super('blobs');
+        super('v1/blobs');
         this._chunkSize = 10240;
         if (config != null)
             this.configure(pip_services_commons_node_1.ConfigParams.fromValue(config));
