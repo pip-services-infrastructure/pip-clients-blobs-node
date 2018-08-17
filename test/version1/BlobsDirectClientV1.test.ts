@@ -4,7 +4,7 @@ let async = require('async');
 import { Descriptor } from 'pip-services-commons-node';
 import { ConfigParams } from 'pip-services-commons-node';
 import { References } from 'pip-services-commons-node';
-import { ConsoleLogger } from 'pip-services-commons-node';
+import { ConsoleLogger } from 'pip-services-components-node';
 
 import { BlobsMemoryPersistence } from 'pip-services-blobs-node';
 import { BlobsController } from 'pip-services-blobs-node';

@@ -6,6 +6,8 @@ let fs = require('fs');
 let stream = require('stream');
 let querystring = require('querystring');
 const pip_services_commons_node_1 = require("pip-services-commons-node");
+const pip_services_components_node_1 = require("pip-services-components-node");
+const pip_services_components_node_2 = require("pip-services-components-node");
 const pip_services_commons_node_2 = require("pip-services-commons-node");
 const pip_services_commons_node_3 = require("pip-services-commons-node");
 const pip_services_commons_node_4 = require("pip-services-commons-node");
@@ -13,8 +15,6 @@ const pip_services_commons_node_5 = require("pip-services-commons-node");
 const pip_services_commons_node_6 = require("pip-services-commons-node");
 const pip_services_commons_node_7 = require("pip-services-commons-node");
 const pip_services_commons_node_8 = require("pip-services-commons-node");
-const pip_services_commons_node_9 = require("pip-services-commons-node");
-const pip_services_commons_node_10 = require("pip-services-commons-node");
 const pip_services_aws_node_1 = require("pip-services-aws-node");
 const BlobsUriProcessorV1_1 = require("./BlobsUriProcessorV1");
 class BlobsS3ClientV1 {
@@ -26,8 +26,8 @@ class BlobsS3ClientV1 {
         this._reducedRedundancy = true;
         this._maxPageSize = 100;
         this._connectionResolver = new pip_services_aws_node_1.AwsConnectionResolver();
-        this._logger = new pip_services_commons_node_2.CompositeLogger();
-        this._counters = new pip_services_commons_node_3.CompositeCounters();
+        this._logger = new pip_services_components_node_1.CompositeLogger();
+        this._counters = new pip_services_components_node_2.CompositeCounters();
         if (config != null)
             this.configure(pip_services_commons_node_1.ConfigParams.fromValue(config));
     }
@@ -44,11 +44,11 @@ class BlobsS3ClientV1 {
         this._counters.setReferences(references);
         this._connectionResolver.setReferences(references);
     }
-    isOpened() {
+    isOpen() {
         return this._opened;
     }
     open(correlationId, callback) {
-        if (this.isOpened()) {
+        if (this.isOpen()) {
             if (callback)
                 callback();
             return;
@@ -104,7 +104,7 @@ class BlobsS3ClientV1 {
             content_type: data.ContentType,
             create_time: data.LastModified,
             expire_time: data.Expires,
-            completed: pip_services_commons_node_6.BooleanConverter.toBoolean(metadata.completed)
+            completed: pip_services_commons_node_4.BooleanConverter.toBoolean(metadata.completed)
         };
     }
     encodeString(value) {
@@ -133,7 +133,7 @@ class BlobsS3ClientV1 {
         return false;
     }
     composeFilter(filter) {
-        filter = filter || new pip_services_commons_node_8.FilterParams();
+        filter = filter || new pip_services_commons_node_6.FilterParams();
         let search = this.encodeString(filter.getAsNullableString('search'));
         let id = filter.getAsNullableString('id');
         let name = this.encodeString(filter.getAsNullableString('name'));
@@ -167,7 +167,7 @@ class BlobsS3ClientV1 {
     }
     getBlobsByFilter(correlationId, filter, paging, callback) {
         let filterCurl = this.composeFilter(filter);
-        paging = paging || new pip_services_commons_node_9.PagingParams();
+        paging = paging || new pip_services_commons_node_7.PagingParams();
         let skip = paging.getSkip(0);
         let take = paging.getTake(this._maxPageSize);
         let result = [];
@@ -224,7 +224,7 @@ class BlobsS3ClientV1 {
                 });
             });
         }, (err) => {
-            let page = err == null ? new pip_services_commons_node_10.DataPage(result, null) : null;
+            let page = err == null ? new pip_services_commons_node_8.DataPage(result, null) : null;
             callback(err, page);
         });
     }
@@ -257,7 +257,7 @@ class BlobsS3ClientV1 {
         });
     }
     createBlobFromUri(correlationId, blob, uri, callback) {
-        blob.id = blob.id || pip_services_commons_node_4.IdGenerator.nextLong();
+        blob.id = blob.id || pip_services_commons_node_2.IdGenerator.nextLong();
         blob.name = this.normalizeName(blob.name);
         BlobsUriProcessorV1_1.BlobsUriProcessorV1.getUriStream(correlationId, blob, uri, (err, rs) => {
             if (err) {
@@ -278,7 +278,7 @@ class BlobsS3ClientV1 {
         this._s3.getSignedUrl('getObject', params, callback);
     }
     createBlobFromData(correlationId, blob, buffer, callback) {
-        blob.id = blob.id || pip_services_commons_node_4.IdGenerator.nextLong();
+        blob.id = blob.id || pip_services_commons_node_2.IdGenerator.nextLong();
         blob.group = this.encodeString(blob.group);
         blob.name = this.normalizeName(blob.name);
         blob.name = this.encodeString(blob.name);
@@ -290,11 +290,11 @@ class BlobsS3ClientV1 {
             ContentDisposition: 'inline; filename=' + filename,
             ContentType: blob.content_type,
             StorageClass: this._reducedRedundancy ? 'REDUCED_REDUNDANCY' : 'STANDARD',
-            Expires: pip_services_commons_node_7.DateTimeConverter.toNullableDateTime(blob.expire_time),
+            Expires: pip_services_commons_node_5.DateTimeConverter.toNullableDateTime(blob.expire_time),
             Metadata: {
                 name: blob.name || blob.id,
                 group: blob.group || "",
-                completed: pip_services_commons_node_5.StringConverter.toString(blob.completed)
+                completed: pip_services_commons_node_3.StringConverter.toString(blob.completed)
             },
             Body: buffer
         };
@@ -319,7 +319,7 @@ class BlobsS3ClientV1 {
         });
     }
     createBlobFromStream(correlationId, blob, callback) {
-        blob.id = blob.id || pip_services_commons_node_4.IdGenerator.nextLong();
+        blob.id = blob.id || pip_services_commons_node_2.IdGenerator.nextLong();
         blob.group = this.encodeString(blob.group);
         blob.name = this.normalizeName(blob.name);
         blob.name = this.encodeString(blob.name);
@@ -332,11 +332,11 @@ class BlobsS3ClientV1 {
             ContentDisposition: 'inline; filename=' + filename,
             ContentType: blob.content_type,
             StorageClass: this._reducedRedundancy ? 'REDUCED_REDUNDANCY' : 'STANDARD',
-            Expires: pip_services_commons_node_7.DateTimeConverter.toNullableDateTime(blob.expire_time),
+            Expires: pip_services_commons_node_5.DateTimeConverter.toNullableDateTime(blob.expire_time),
             Metadata: {
                 name: blob.name || blob.id,
                 group: blob.group || "",
-                completed: pip_services_commons_node_5.StringConverter.toString(blob.completed)
+                completed: pip_services_commons_node_3.StringConverter.toString(blob.completed)
             },
             Body: ws
         };
@@ -384,11 +384,11 @@ class BlobsS3ClientV1 {
             ContentDisposition: 'inline; filename=' + filename,
             ContentType: blob.content_type,
             StorageClass: this._reducedRedundancy ? 'REDUCED_REDUNDANCY' : 'STANDARD',
-            Expires: pip_services_commons_node_7.DateTimeConverter.toNullableDateTime(blob.expire_time),
+            Expires: pip_services_commons_node_5.DateTimeConverter.toNullableDateTime(blob.expire_time),
             Metadata: {
                 name: blob.name,
                 group: blob.group,
-                completed: pip_services_commons_node_5.StringConverter.toString(blob.completed)
+                completed: pip_services_commons_node_3.StringConverter.toString(blob.completed)
             }
         };
         this._s3.copyObject(params, (err, data) => {

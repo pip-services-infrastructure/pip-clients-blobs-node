@@ -3,5 +3,4 @@
 /.idea
 /dist
 /obj/test
-/data/*.tmp
-/config/test_connections.yaml
+/data/*

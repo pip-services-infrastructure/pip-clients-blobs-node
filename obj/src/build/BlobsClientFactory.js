@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const pip_services_commons_node_1 = require("pip-services-commons-node");
-const pip_services_commons_node_2 = require("pip-services-commons-node");
+const pip_services_components_node_1 = require("pip-services-components-node");
 const BlobsNullClientV1_1 = require("../version1/BlobsNullClientV1");
 const BlobsDirectClientV1_1 = require("../version1/BlobsDirectClientV1");
 const BlobsHttpClientV1_1 = require("../version1/BlobsHttpClientV1");
 const BlobsSenecaClientV1_1 = require("../version1/BlobsSenecaClientV1");
 const BlobsS3ClientV1_1 = require("../version1/BlobsS3ClientV1");
-class BlobsClientFactory extends pip_services_commons_node_2.Factory {
+class BlobsClientFactory extends pip_services_components_node_1.Factory {
     constructor() {
         super();
         this.registerAsType(BlobsClientFactory.NullClientV1Descriptor, BlobsNullClientV1_1.BlobsNullClientV1);

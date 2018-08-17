@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const pip_services_commons_node_1 = require("pip-services-commons-node");
-const pip_services_net_node_1 = require("pip-services-net-node");
+const pip_services_seneca_node_1 = require("pip-services-seneca-node");
 const BlobsDataProcessorV1_1 = require("./BlobsDataProcessorV1");
 const BlobsUriProcessorV1_1 = require("./BlobsUriProcessorV1");
 const BlobsStreamProcessorV1_1 = require("./BlobsStreamProcessorV1");
-class BlobsSenecaClientV1 extends pip_services_net_node_1.CommandableSenecaClient {
+class BlobsSenecaClientV1 extends pip_services_seneca_node_1.CommandableSenecaClient {
     constructor(config) {
         super('blobs');
         this._chunkSize = 10240;

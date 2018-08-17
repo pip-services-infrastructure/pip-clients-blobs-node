@@ -3,7 +3,7 @@ import { IReferences } from 'pip-services-commons-node';
 import { FilterParams } from 'pip-services-commons-node';
 import { PagingParams } from 'pip-services-commons-node';
 import { DataPage } from 'pip-services-commons-node';
-import { CommandableSenecaClient } from 'pip-services-net-node';
+import { CommandableSenecaClient } from 'pip-services-seneca-node';
 
 import { BlobInfoV1 } from './BlobInfoV1';
 import { IBlobsClientV1 } from './IBlobsClientV1';

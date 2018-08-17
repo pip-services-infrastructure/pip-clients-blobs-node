@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const pip_services_commons_node_1 = require("pip-services-commons-node");
 const pip_services_commons_node_2 = require("pip-services-commons-node");
-const pip_services_net_node_1 = require("pip-services-net-node");
+const pip_services_rpc_node_1 = require("pip-services-rpc-node");
 const BlobsUriProcessorV1_1 = require("./BlobsUriProcessorV1");
 const BlobsDataProcessorV1_1 = require("./BlobsDataProcessorV1");
 const BlobsStreamProcessorV1_1 = require("./BlobsStreamProcessorV1");
 //import { IBlobsController } from 'pip-services-blobs-node';
-class BlobsDirectClientV1 extends pip_services_net_node_1.DirectClient {
+class BlobsDirectClientV1 extends pip_services_rpc_node_1.DirectClient {
     constructor(config) {
         super();
         this._chunkSize = 10240;

@@ -2,7 +2,7 @@ import { ConfigParams } from 'pip-services-commons-node';
 import { FilterParams } from 'pip-services-commons-node';
 import { PagingParams } from 'pip-services-commons-node';
 import { DataPage } from 'pip-services-commons-node';
-import { DirectClient } from 'pip-services-net-node';
+import { DirectClient } from 'pip-services-rpc-node';
 import { BlobInfoV1 } from './BlobInfoV1';
 import { IBlobsClientV1 } from './IBlobsClientV1';
 import { IBlobsChunkyReaderV1 } from './IBlobsChunkyReaderV1';

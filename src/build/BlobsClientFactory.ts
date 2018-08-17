@@ -1,5 +1,5 @@
 import { Descriptor } from 'pip-services-commons-node';
-import { Factory } from 'pip-services-commons-node';
+import { Factory } from 'pip-services-components-node';
 
 import { BlobsNullClientV1 } from '../version1/BlobsNullClientV1';
 import { BlobsDirectClientV1 } from '../version1/BlobsDirectClientV1';
