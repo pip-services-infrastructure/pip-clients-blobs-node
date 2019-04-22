@@ -1,10 +1,10 @@
 let assert = require('chai').assert;
 let async = require('async');
 
-import { Descriptor } from 'pip-services-commons-node';
-import { ConfigParams } from 'pip-services-commons-node';
-import { References } from 'pip-services-commons-node';
-import { ConsoleLogger } from 'pip-services-components-node';
+import { Descriptor } from 'pip-services3-commons-node';
+import { ConfigParams } from 'pip-services3-commons-node';
+import { References } from 'pip-services3-commons-node';
+import { ConsoleLogger } from 'pip-services3-components-node';
 
 import { BlobsMemoryPersistence } from 'pip-services-blobs-node';
 import { BlobsController } from 'pip-services-blobs-node';

@@ -1,4 +1,4 @@
-import { StringValueMap } from 'pip-services-commons-node';
+import { StringValueMap } from 'pip-services3-commons-node';
 
 export class BlobInfoV1 {
 

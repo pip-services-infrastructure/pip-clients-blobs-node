@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const pip_services_commons_node_1 = require("pip-services-commons-node");
-const pip_services_aws_node_1 = require("pip-services-aws-node");
+const pip_services3_commons_node_1 = require("pip-services3-commons-node");
+const pip_services3_aws_node_1 = require("pip-services3-aws-node");
 const BlobsDataProcessorV1_1 = require("./BlobsDataProcessorV1");
 const BlobsUriProcessorV1_1 = require("./BlobsUriProcessorV1");
 const BlobsStreamProcessorV1_1 = require("./BlobsStreamProcessorV1");
-class BlobsLambdaClientV1 extends pip_services_aws_node_1.CommandableLambdaClient {
+class BlobsLambdaClientV1 extends pip_services3_aws_node_1.CommandableLambdaClient {
     constructor(config) {
         super('blobs');
         this._chunkSize = 10240;
         if (config != null)
-            this.configure(pip_services_commons_node_1.ConfigParams.fromValue(config));
+            this.configure(pip_services3_commons_node_1.ConfigParams.fromValue(config));
     }
     configure(config) {
         super.configure(config);

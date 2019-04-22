@@ -1,4 +1,4 @@
-import { ConfigParams } from 'pip-services-commons-node';
+import { ConfigParams } from 'pip-services3-commons-node';
 
 import { BlobsClientFixtureV1 } from './BlobsClientFixtureV1';
 import { BlobsLambdaClientV1 } from '../../src/version1/BlobsLambdaClientV1';

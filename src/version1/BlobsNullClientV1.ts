@@ -1,8 +1,8 @@
 let stream = require('stream');
 
-import { FilterParams } from 'pip-services-commons-node';
-import { PagingParams } from 'pip-services-commons-node';
-import { DataPage } from 'pip-services-commons-node';
+import { FilterParams } from 'pip-services3-commons-node';
+import { PagingParams } from 'pip-services3-commons-node';
+import { DataPage } from 'pip-services3-commons-node';
 
 import { BlobInfoV1 } from './BlobInfoV1';
 import { IBlobsClientV1 } from './IBlobsClientV1';

@@ -1,7 +1,7 @@
 let http = require('http');
 let https = require('https');
 
-import { BadRequestException } from 'pip-services-commons-node';
+import { BadRequestException } from 'pip-services3-commons-node';
 
 import { BlobInfoV1 } from './BlobInfoV1';
 import { IBlobsChunkyWriterV1 } from './IBlobsChunkyWriterV1';

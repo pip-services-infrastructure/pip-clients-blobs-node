@@ -4,7 +4,7 @@ let assert = require('chai').assert;
 let stream = require('stream');
 let fs = require('fs');
 
-import { IdGenerator } from 'pip-services-commons-node';
+import { IdGenerator } from 'pip-services3-commons-node';
 
 import { BlobInfoV1 } from '../../src/version1/BlobInfoV1';
 import { IBlobsClientV1 } from '../../src/version1/IBlobsClientV1';

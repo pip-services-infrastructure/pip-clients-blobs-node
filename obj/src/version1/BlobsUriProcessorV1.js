@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 let http = require('http');
 let https = require('https');
-const pip_services_commons_node_1 = require("pip-services-commons-node");
+const pip_services3_commons_node_1 = require("pip-services3-commons-node");
 const BlobsStreamProcessorV1_1 = require("./BlobsStreamProcessorV1");
 class BlobsUriProcessorV1 {
     static getUriStream(correlationId, blob, uri, callback) {
@@ -13,13 +13,13 @@ class BlobsUriProcessorV1 {
         else if (uri.substring(0, 8) == 'https://')
             transport = https;
         else {
-            callback(new pip_services_commons_node_1.BadRequestException(correlationId, 'UNSUPPORTED_TRANSPORT', 'Unsupported transport in ' + uri)
+            callback(new pip_services3_commons_node_1.BadRequestException(correlationId, 'UNSUPPORTED_TRANSPORT', 'Unsupported transport in ' + uri)
                 .withDetails('uri', uri), null);
             return;
         }
         transport.get(uri, (response) => {
             if (response.statusCode >= 400) {
-                callback(new pip_services_commons_node_1.BadRequestException(correlationId, 'BAD_URI', 'Uri ' + uri + ' cannot be opened')
+                callback(new pip_services3_commons_node_1.BadRequestException(correlationId, 'BAD_URI', 'Uri ' + uri + ' cannot be opened')
                     .withDetails('uri', uri), null);
                 return;
             }
