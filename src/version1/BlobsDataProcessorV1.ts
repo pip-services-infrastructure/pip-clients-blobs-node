@@ -94,8 +94,8 @@ export class BlobsDataProcessorV1 {
                                 else {
                                     let data = Buffer.from(chunk, 'base64');
                                     buffer = Buffer.concat([buffer, data]);
-                                    size -= buffer.length;
-                                    skip += buffer.length;
+                                    size -= data.length;
+                                    skip += data.length;
                                     callback();
                                 }
                             }

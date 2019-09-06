@@ -21,6 +21,7 @@ class BlobsClientFactory extends pip_services3_components_node_1.Factory {
         this.registerAsType(BlobsClientFactory.GrpcClientV1Descriptor, BlobsGrpcClientV1_1.BlobsGrpcClientV1);
     }
 }
+exports.BlobsClientFactory = BlobsClientFactory;
 BlobsClientFactory.Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-blobs', 'factory', 'default', 'default', '1.0');
 BlobsClientFactory.NullClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-blobs', 'client', 'null', 'default', '1.0');
 BlobsClientFactory.DirectClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-blobs', 'client', 'direct', 'default', '1.0');
@@ -29,5 +30,4 @@ BlobsClientFactory.LambdaClientV1Descriptor = new pip_services3_commons_node_1.D
 BlobsClientFactory.S3ClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-blobs', 'client', 's3', 'default', '1.0');
 BlobsClientFactory.CommandableGrpcClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-blobs', 'client', 'commandable-grpc', 'default', '1.0');
 BlobsClientFactory.GrpcClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-blobs', 'client', 'grpc', 'default', '1.0');
-exports.BlobsClientFactory = BlobsClientFactory;
 //# sourceMappingURL=BlobsClientFactory.js.map
