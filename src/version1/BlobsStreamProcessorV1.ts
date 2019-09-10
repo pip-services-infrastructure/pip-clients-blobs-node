@@ -46,6 +46,7 @@ export class BlobsStreamProcessorV1 {
 
             writer.endBlobWrite(correlationId, token, '', (err, data) => {
                 blob = data;
+                token = null;
                 callback(err, data);
             })
         };

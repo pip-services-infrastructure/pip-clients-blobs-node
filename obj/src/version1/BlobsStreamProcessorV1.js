@@ -38,6 +38,7 @@ class BlobsStreamProcessorV1 {
                 return;
             writer.endBlobWrite(correlationId, token, '', (err, data) => {
                 blob = data;
+                token = null;
                 callback(err, data);
             });
         };
