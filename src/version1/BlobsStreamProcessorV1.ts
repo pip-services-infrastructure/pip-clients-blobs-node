@@ -12,6 +12,7 @@ export class BlobsStreamProcessorV1 {
         writer: IBlobsChunkyWriterV1, callback?: (err: any, blob: BlobInfoV1) => void): any {
 
         let token: string = null;
+        let error: any = null;
         let ws = stream.Writable();
         
         ws._write = (chunk: any, enc: string, next: (err: any) => void) => {
@@ -32,7 +33,7 @@ export class BlobsStreamProcessorV1 {
                 (callback) => {
                     let chunk = buffer.toString('base64');
                     writer.writeBlobChunk(correlationId, token, chunk, (err, tok) => {
-                        token = tok;
+                        token = tok || token;
                         callback(err);
                     });
                 }
@@ -47,7 +48,7 @@ export class BlobsStreamProcessorV1 {
             writer.endBlobWrite(correlationId, token, '', (err, data) => {
                 blob = data;
                 token = null;
-                callback(err, data);
+                callback(error || err, data);
             })
         };
 
@@ -56,10 +57,14 @@ export class BlobsStreamProcessorV1 {
 
         // Abort writing blob
         ws.on('error', (err) => {
-            if (token != null)
-                writer.abortBlobWrite(correlationId, token, (err) => {
-                    // Ignore abort error
-                });
+            error = err;
+
+            if (token == null) return;
+
+            // Ignore abort error
+            writer.abortBlobWrite(correlationId, token, (err) => {
+                token = null;
+            });
         })
 
         return ws;

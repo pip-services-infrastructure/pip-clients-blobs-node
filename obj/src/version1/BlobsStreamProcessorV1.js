@@ -6,6 +6,7 @@ let stream = require('stream');
 class BlobsStreamProcessorV1 {
     static createBlobFromStream(correlationId, blob, writer, callback) {
         let token = null;
+        let error = null;
         let ws = stream.Writable();
         ws._write = (chunk, enc, next) => {
             let buffer = chunk != null ? Buffer.from(chunk, enc) : null;
@@ -25,7 +26,7 @@ class BlobsStreamProcessorV1 {
                 (callback) => {
                     let chunk = buffer.toString('base64');
                     writer.writeBlobChunk(correlationId, token, chunk, (err, tok) => {
-                        token = tok;
+                        token = tok || token;
                         callback(err);
                     });
                 }
@@ -39,17 +40,20 @@ class BlobsStreamProcessorV1 {
             writer.endBlobWrite(correlationId, token, '', (err, data) => {
                 blob = data;
                 token = null;
-                callback(err, data);
+                callback(error || err, data);
             });
         };
         ws.on('end', close);
         ws.on('finish', close);
         // Abort writing blob
         ws.on('error', (err) => {
-            if (token != null)
-                writer.abortBlobWrite(correlationId, token, (err) => {
-                    // Ignore abort error
-                });
+            error = err;
+            if (token == null)
+                return;
+            // Ignore abort error
+            writer.abortBlobWrite(correlationId, token, (err) => {
+                token = null;
+            });
         });
         return ws;
     }
