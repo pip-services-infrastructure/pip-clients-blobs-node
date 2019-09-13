@@ -37,7 +37,7 @@ class BlobsStreamProcessorV1 {
         let close = () => {
             if (token == null)
                 return;
-            writer.endBlobWrite(correlationId, token, '', (err, data) => {
+            writer.endBlobWrite(correlationId, token, ' ', (err, data) => {
                 blob = data;
                 token = null;
                 callback(error || err, data);
