@@ -61,6 +61,8 @@ export class BlobsUriProcessorV1 {
 
             blob.content_type = blob.content_type || rs.headers['content-type'];
             blob.size = blob.size || rs.headers['content-length'];
+            // convert blob.size to number
+            blob.size = +blob.size;
 
             let ws = BlobsStreamProcessorV1.createBlobFromStream(correlationId, blob, writer, callback);
             rs.pipe(ws);
