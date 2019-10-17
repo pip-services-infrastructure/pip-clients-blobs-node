@@ -28,7 +28,7 @@
     "engines": {
         "node": ">=0.6.14"
     },
-    "private": true,
+    "private": false,
     "scripts": {
         "build": "tsc",
         "watch": "tsc --watch",
@@ -58,6 +58,6 @@
         "restify": "^4.3.0",
         "chai": "*",
         "mocha": "*",
-        "pip-services-blobs-node": "git+ssh://git@github.com:pip-services-infrastructure/pip-services-blobs-node.git"
+        "pip-services-blobs-node": "^1.0.2"
     }
 }
