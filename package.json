@@ -1,6 +1,6 @@
 {
     "name": "pip-clients-blobs-node",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "author": "Conceptual Vision Consulting LLC",
     "description": "Node.js client sdk for pip-services-blobs microservice",
     "contributors": [
@@ -53,11 +53,9 @@
         "@types/async": "^2.0.0",
         "@types/chai": "*",
         "@types/mocha": "*",
-        "@types/mongodb": "^2.1.38",
-        "@types/mongoose": "^4.7.4",
         "restify": "^4.3.0",
         "chai": "*",
         "mocha": "*",
-        "pip-services-blobs-node": "^1.0.2"
+        "pip-services-blobs-node": "^1.1.0"
     }
 }
