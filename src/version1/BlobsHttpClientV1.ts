@@ -218,7 +218,7 @@ export class BlobsHttpClientV1 extends CommandableHttpClient
     public deleteBlobById(correlationId: string, blobId: string,
         callback?: (err: any) => void): void {
         this.callCommand(
-            'delete_blob_id',
+            'delete_blob_by_id',
             correlationId,
             {
                 blob_id: blobId
