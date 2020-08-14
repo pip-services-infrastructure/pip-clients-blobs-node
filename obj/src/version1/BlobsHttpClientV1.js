@@ -102,7 +102,7 @@ class BlobsHttpClientV1 extends pip_services3_rpc_node_1.CommandableHttpClient {
         }, callback);
     }
     deleteBlobById(correlationId, blobId, callback) {
-        this.callCommand('delete_blob_id', correlationId, {
+        this.callCommand('delete_blob_by_id', correlationId, {
             blob_id: blobId
         }, callback);
     }

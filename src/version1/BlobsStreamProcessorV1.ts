@@ -15,7 +15,7 @@ export class BlobsStreamProcessorV1 {
         let error: any = null;
         let ws = stream.Writable();
         
-        ws._write = (chunk: any, enc: string, next: (err: any) => void) => {
+        ws._write = (chunk: any, enc: BufferEncoding, next: (err: any) => void) => {
             let buffer = chunk != null ? Buffer.from(chunk, enc): null;
             
             async.series([
