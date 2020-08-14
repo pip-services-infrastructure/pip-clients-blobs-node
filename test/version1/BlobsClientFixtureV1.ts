@@ -4,7 +4,7 @@ let assert = require('chai').assert;
 let stream = require('stream');
 let fs = require('fs');
 
-import { IdGenerator } from 'pip-services3-commons-node';
+import { IdGenerator, FilterParams } from 'pip-services3-commons-node';
 
 import { BlobInfoV1 } from '../../src/version1/BlobInfoV1';
 import { IBlobsClientV1 } from '../../src/version1/IBlobsClientV1';
@@ -97,7 +97,12 @@ export class BlobsClientFixtureV1 {
         // Get blobs
             (callback) => {
                 this._client.getBlobsByFilter(
-                    null, null, null, 
+                    null,
+                    FilterParams.fromTuples(
+                        'group', 'test', 
+                        'expired', true
+                    ),
+                    null, 
                     (err, page) => {
                         assert.isNull(err);
 
