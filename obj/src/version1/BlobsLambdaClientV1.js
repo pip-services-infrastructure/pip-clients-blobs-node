@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BlobsLambdaClientV1 = void 0;
 const pip_services3_commons_node_1 = require("pip-services3-commons-node");
 const pip_services3_aws_node_1 = require("pip-services3-aws-node");
 const BlobsDataProcessorV1_1 = require("./BlobsDataProcessorV1");

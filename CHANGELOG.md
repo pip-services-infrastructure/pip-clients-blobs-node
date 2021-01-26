@@ -1,3 +1,8 @@
+<a name="1.0.5"></a> ### 1.0.5 (2021-01-26)
+
+#### Bug Fixes
+Fix update method in BlobsS3Client
+
 <a name="1.0.0"></a> ### 1.0.0 (2017-03-28)
 
 #### Features

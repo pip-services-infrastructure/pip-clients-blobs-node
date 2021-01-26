@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BlobsNullClientV1 = void 0;
 let stream = require('stream');
 const pip_services3_commons_node_1 = require("pip-services3-commons-node");
 class BlobsNullClientV1 {

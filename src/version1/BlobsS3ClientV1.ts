@@ -491,7 +491,8 @@ export class BlobsS3ClientV1
                 name: blob.name,
                 group: blob.group,
                 completed: StringConverter.toString(blob.completed)
-            }
+            },
+            MetadataDirective: "REPLACE"
         };
 
          this._s3.copyObject(

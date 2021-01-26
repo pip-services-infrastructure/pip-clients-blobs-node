@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BlobsS3ClientV1 = void 0;
 let _ = require('lodash');
 let async = require('async');
 let fs = require('fs');
@@ -389,7 +390,8 @@ class BlobsS3ClientV1 {
                 name: blob.name,
                 group: blob.group,
                 completed: pip_services3_commons_node_3.StringConverter.toString(blob.completed)
-            }
+            },
+            MetadataDirective: "REPLACE"
         };
         this._s3.copyObject(params, (err, data) => {
             blob = err == null ? blob : null;
